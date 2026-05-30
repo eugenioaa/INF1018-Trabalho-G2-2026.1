@@ -1,0 +1,7 @@
+Relatorio sobre progresso do trabalho
+
+Dia 1:
+Comecamos a desenvolver o codigo do trabalho.
+Primiero criamos o esqueleto em assembly para poder fixar nosso elemento de retorno no topo da pilla, 
+este mesmo esqueleto e usado para saber onde o retorno ira na memoria.
+tudo sito pode ser visto no arquivo code.s 
