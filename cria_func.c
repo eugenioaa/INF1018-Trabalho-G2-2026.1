@@ -24,3 +24,38 @@ unsigned char prol[] = {
     for (i = 0; i < 19; i++) {
         codigo[pos++] = prol[i];
     }
+    for (i = 0; i < n; i++) {
+        // caso 1: Parâmetro Fixo 
+        if (params[i].orig_val == FIX) {
+            if (params[i].tipo_val == INT_PAR) {
+                if (i == 0) { codigo[pos++] = 0xbf; }
+                else if (i == 1) { codigo[pos++] = 0xbe; }
+                else if (i == 2) { codigo[pos++] = 0xba; }
+                
+                *(int*)(&codigo[pos]) = params[i].valor.v_int;
+                pos += 4; //  (tamanho do int)
+            } else {
+                if (i == 0) { codigo[pos++] = 0x48; codigo[pos++] = 0xbf; }
+                else if (i == 1) { codigo[pos++] = 0x48; codigo[pos++] = 0xbe; }
+                else if (i == 2) { codigo[pos++] = 0x48; codigo[pos++] = 0xba; }
+                
+                *(void**)(&codigo[pos]) = params[i].valor.v_ptr;
+                pos += 8; // (tamanho do ponteiro 64 bits)
+            }
+        }
+        // caso 2: Parâmetro Indireto 
+        else if (params[i].orig_val == IND) {
+            codigo[pos++] = 0x48; codigo[pos++] = 0xb8;
+            *(void**)(&codigo[pos]) = params[i].valor.v_ptr;
+            pos += 8;
+
+            if (params[i].tipo_val == INT_PAR) {
+                if (i == 0) { codigo[pos++] = 0x8b; codigo[pos++] = 0x38; }
+                else if (i == 1) { codigo[pos++] = 0x8b; codigo[pos++] = 0x30; }
+                else if (i == 2) { codigo[pos++] = 0x8b; codigo[pos++] = 0x10; }
+            } else {
+                if (i == 0) { codigo[pos++] = 0x48; codigo[pos++] = 0x8b; codigo[pos++] = 0x38; }
+                else if (i == 1) { codigo[pos++] = 0x48; codigo[pos++] = 0x8b; codigo[pos++] = 0x30; }
+                else if (i == 2) { codigo[pos++] = 0x48; codigo[pos++] = 0x8b; codigo[pos++] = 0x10; }
+            }
+        }
