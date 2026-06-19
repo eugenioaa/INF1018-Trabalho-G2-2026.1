@@ -1,5 +1,5 @@
-/* Eugenio Antelo 2412882 3WA */
-/* Pedro Favassa 2412917 3WA */
+/* Eugenio_Antelo 2412882 3WA */
+/* Pedro_Favassa 2412917 3WA */
 
 #include "cria_func.h"
 
@@ -20,7 +20,7 @@ unsigned char prol[] = {
         0x49, 0x89, 0xd6        // mov %rdx, %r14 
     };
 
-    for (i = 0; i < 19; i++) {
+    for (i = 0; i < (int)sizeof(prol); i++) {
         codigo[pos++] = prol[i];
     }
     for (i = 0; i < n; i++) {
@@ -115,7 +115,7 @@ unsigned char prol[] = {
         0xc9,       // leave 
         0xc3        // ret 
     };
-    for (i = 0; i < 8; i++) {
+    for (i = 0; i < (int)sizeof(epi); i++) {
         codigo[pos++] = epi[i];
     }
 }

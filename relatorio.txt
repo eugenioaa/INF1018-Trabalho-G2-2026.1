@@ -1,7 +1,101 @@
-Relatorio sobre progresso do trabalho
+/* Eugenio_Antelo 2412882 3WA */
+/* Pedro_Favassa 2412917 3WA */
 
-Dia 1:
-Comecamos a desenvolver o codigo do trabalho.
-Primiero criamos o esqueleto em assembly para poder fixar nosso elemento de retorno no topo da pilla, 
-este mesmo esqueleto e usado para saber onde o retorno ira na memoria.
-tudo sito pode ser visto no arquivo code.s 
+1. TESTES REALIZADOS E RESULTADOS
+Todos os testes executaram com sucesso. 
+A saída completa do programa está reproduzida abaixo:
+
+------- TESTE 1: mult(PARAM, FIX) ------
+mult(5, FIX=10) = 50 | Esperado: 50
+
+  Descrição: funcao mult(int x, int y) com 2 parâmetros.
+  Primeiro parâmetro (PARAM) e repassado pela nova função.
+  Segundo parâmetro e amarrado ao valor constante 10.
+  A nova função recebe apenas 1 argumento (x) e retorna x*10.
+
+------ TESTE 2: operacao_complexa(PARAM, IND, FIX) ------
+*(&va=10) + *(&vb=5) = 15 | Esperado: 15
+
+  Descrição: função soma_ptrs(int* a, int* b) com 2 ponteiros.
+  Primeiro parâmetro (PTR_PAR FIX): endereço de va (=10) amarrado.
+  Segundo parâmetro (PTR_PAR PARAM): ponteiro repassado pela
+  nova função.
+  A nova função recebe 1 ponteiro (int*) e soma os valores
+  apontados: *(&va) + *(&vb) = 10 + 5 = 15.
+
+------ TESTE 3: mult(IND, FIX) sem argumentos ------
+10 20 30 40 50 60 70 80 90 100
+Esperado: 10 20 30 40 50 60 70 80 90 100
+
+  Descrição: corresponde ao segundo exemplo do enunciado.
+  Função mult(int x, int y) com os dois parâmetros amarrados.
+  Primeiro (IND): amarrado ao valor corrente da variavel i
+                  (lida pelo ponteiro &i a cada chamada).
+  Segundo (FIX): amarrado a constante 10.
+  A nova função não recebe argumentos. A cada iteração do
+  loop, f() lê o valor atual de i e retorna i*10.
+
+------ TESTE 4: memcmp(PTR FIX + PTR PARAM + INT PARAM) ------
+prefixo-12 | 'quero saber tudo' == 'quero saber se a outra...'? SIM | Esperado: SIM
+prefixo-16 | 'quero saber tudo' == 'quero saber se a outra...'? NAO | Esperado: NAO
+
+  Descrição: corresponde ao terceiro exemplo do enunciado.
+  Função de biblioteca memcmp(const void* s1, const void* s2,
+  size_t n) com 3 parâmetros de tipos mistos.
+  Primeiro (PTR_PAR FIX): endereço da string "fixa" amarrado.
+  Segundo (PTR_PAR PARAM): ponteiro para string candidata repassado pela nova função.
+  Terceiro (INT_PAR PARAM): tamanho n repassado pela nova função.
+  A nova função gerada equivale a mesmo_prefixo(candidata, n).
+  Com prefixo-12, as strings sao iguais (SIM).
+  Com prefixo-16, as strings diferem após o 12⁠º caractere (NAO).
+
+- TESTE EXTRAS
+------ TESTE I: operacao_complexa - PARAM + IND + FIX ------
+(4+3)*2 = 14 | Esperado: 14
+(4+5)*2 = 18 | Esperado: 18
+
+  Descrição: função operacao_complexa(int a, int b, int c)
+  com 3 parâmetros inteiros.
+  Primeiro (PARAM): repassado pela nova função.
+  Segundo (IND): amarrado ao valor corrente da variável valor_b.
+  Terceiro (FIX): amarrado a constante 2.
+  O teste 2B demonstra que o parâmetro IND lê o valor
+  atualizado da variável (valor_b mudou de 3 para 5),
+  confirmando que a leitura e feita em tempo de execução.
+
+------ TESTE II: dobro - 1 parametro ------
+dobro(5) PARAM = 10 | Esperado: 10
+dobro(FIX=7)   = 14 | Esperado: 14
+
+  Descrição: função dobro(int x) com apenas 1 parâmetro.
+  Teste 3a: parâmetro PARAM, nova função recebe 1 argumento.
+  Teste 3b: parâmetro FIX=7, nova função não recebe argumentos.
+
+
+2. O QUE ESTA FUNCIONANDO
+  - Geração do código de máquina para funções com 1, 2 e 3
+    Parâmetros (todos os valores validos do enunciado).
+  - Parâmetros do tipo INT_PAR e PTR_PAR.
+  - Origem dos parâmetros: PARAM, FIX e IND, em qualquer
+    combinação numa mesma função gerada.
+  - Chamada a funções definidas pelo usuário e a funções
+    da biblioteca padrão (memcmp).
+  - Alinhamento correto da pilha em 16 bytes durante a
+    chamada, necessário para funções de biblioteca.
+  - Parâmetros IND leem o valor corrente da variável no
+    momento de cada chamada (não no momento de cria_func).
+  - Nova função sem argumentos quando todos os parâmetros
+    Estão amarrados (FIX ou IND).
+  - Retorno do valor da função original e preservado
+    intacto (via %rax), sem necessidade de tratamento
+    adicional.
+
+3. CONCLUSÃO
+A implementação de cria_func esta completa e funcional.
+Todos os requisitos do enunciado foram atendidos:
+  - Geração dinâmica de código de máquina 
+  - Suporte a 1, 2 e 3 parametros 
+  - Tipos INT_PAR e PTR_PAR 
+  - Origem PARAM, FIX e IND 
+  - Chamada a funções externas
+  - Alinhamento correto da pilha
